@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Filtrado de Datos de Google Sheets</title>
+  <style>
+    table, th, td {
+      border: 1px solid #ddd;
+      border-collapse: collapse;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScekem_VxIXc3raecaCHhdec4GEtVx1b_hoZw0I8OFMl5pp6A/viewform?embedded=true" width="640" height="419" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+  <h1>Datos Filtrados</h1>
+  <table>
+    <thead id="tabla-encabezado"></thead>
+    <tbody id="tabla-datos"></tbody>
+  </table>
+
+  <script>
+    // 1. Extraer el parámetro "filtro" desde la URL del navegador
+    const urlParams = new URLSearchParams(window.location.search);
+    const filtro = urlParams.get('filtro');
+
+    // 2. URL de tu Apps Script desplegado (endpoint)
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbxbqFWbpy3CXEFsn1yp7xh-5DnOlE4MGFk3h8ZHoi-niAsDgsjgmP0SIVTdalkikSmA/exec";
+
+    // 3. Construir la URL de solicitud incluyendo el parámetro si existe
+    let fetchUrl = scriptUrl;
+    if (filtro) {
+      fetchUrl += "?filtro=" + encodeURIComponent(filtro);
+    }
+    console.log(fetchUrl,2112);
+    
+
+    // 4. Realizar la solicitud para obtener los datos filtrados
+    fetch(fetchUrl)
+      .then(response => response.json())
+      .then(data => {
+        const thead = document.getElementById("tabla-encabezado");
+        const tbody = document.getElementById("tabla-datos");
+
+        if (data.length > 0) {
+          // Asumimos que la primera fila es el encabezado
+          const headerRow = document.createElement("tr");
+          data[0].forEach(headerText => {
+            const th = document.createElement("th");
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+
+          // Mostrar las filas de datos filtrados (la función doGet ya se encargó del filtrado)
+          data.slice(1).forEach(row => {
+            const tr = document.createElement("tr");
+            row.forEach(cell => {
+              const td = document.createElement("td");
+              td.textContent = cell;
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+        } else {
+          tbody.innerHTML = "<tr><td colspan='2'>No se encontraron datos</td></tr>";
+        }
+      })
+      .catch(error => console.error("Error al obtener los datos:", error));
+  </script>
+</body>
+</html>
