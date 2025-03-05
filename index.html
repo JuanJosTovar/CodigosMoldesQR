@@ -3,28 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Formulario con Autocompletado y Datos Filtrados</title>
-  <style>
-    table, th, td {
-      border: 1px solid #ddd;
-      border-collapse: collapse;
-      padding: 8px;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <!-- Iframe para el Google Form (usa el enlace pre-rellenado que corresponda si deseas autocompletar) -->
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYIh7ysGzIryeJu4zu3d2qOyGu7xoUQ7kygU3yj60JGYsgYA/viewform?embedded=true" width="640" height="1165" frameborder="0" marginheight="0" marginwidth="0">
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeYIh7ysGzIryeJu4zu3d2qOyGu7xoUQ7kygU3yj60JGYsgYA/viewform?embedded=true" class="form" width="640" height="1165" frameborder="0" marginheight="0" marginwidth="0">
     Cargando…
   </iframe>
   
-  <h1>Datos Filtrados</h1>
+  <h1 id="tittle">Reportes</h1>
   <table>
     <thead id="tabla-encabezado"></thead>
     <tbody id="tabla-datos"></tbody>
@@ -35,6 +22,7 @@
     function handleResponse(data) {
       const thead = document.getElementById("tabla-encabezado");
       const tbody = document.getElementById("tabla-datos");
+      const title = document.getElementById("tittle");
       // Limpiar contenido previo
       thead.innerHTML = "";
       tbody.innerHTML = "";
@@ -64,14 +52,16 @@
       }
     }
     
-    // Extraer el parámetro "filtro" desde la URL (por ejemplo, ?filtro=1)
     const urlParams = new URLSearchParams(window.location.search);
     const filtro = urlParams.get('filtro');
+
+    const titleElem = document.getElementById('tittle');
+    if (filtro) {
+      titleElem.innerHTML = `Reportes ${filtro}`;
+    }
     
-    // URL de tu Apps Script desplegado (endpoint)
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbwC71k8XdojjSvBwb2Pnn-3LZ1sS8COg3ZFE2_w3SZ3DYZJxYtKNGwvpbR3mHcs_Iv7Sw/exec";
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbzFKsBq3YW8mtwvsDH3J1EyZ1lNAkR--VzCqclg9Xn8sBx8v7nrnpvloqT111LC67dYCQ/exec";
     
-    // Construir la URL para JSONP, agregando el parámetro "callback" y "filtro" si existe
     let jsonpUrl = scriptUrl + "?callback=handleResponse";
     if (filtro) {
       jsonpUrl += "&filtro=" + encodeURIComponent(filtro);
