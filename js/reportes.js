@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         let pdfLink = documento.PDF;
         pdfLink = pdfLink.replace("/view", "/preview");
         document.getElementById("pdf-viewer").src = pdfLink;
+        console.log(pdfLink,1212122112);
+        
       } else {
         console.error("Documento no encontrado.");
       }
