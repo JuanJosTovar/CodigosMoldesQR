@@ -25,6 +25,9 @@
         if(index === 4) {
           td.classList.add("reporte");
         }
+        if(index === 4) {
+          td.classList.add("reporte");
+        }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
