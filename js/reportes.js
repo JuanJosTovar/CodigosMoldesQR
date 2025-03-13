@@ -19,9 +19,12 @@
     // Crear las filas de datos
     data.slice(1).forEach(row => {
       const tr = document.createElement("tr");
-      row.forEach(cell => {
+      row.forEach((cell, index) => {
         const td = document.createElement("td");
         td.textContent = cell;
+        if(index === 4) {
+          td.classList.add("reporte");
+        }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
@@ -35,6 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get("id");
   const filtro = urlParams.get("filtro");
+  console.log(filtro,12121);
+  
   
   // Actualizar título si se envía un filtro
   if (filtro) {
@@ -54,8 +59,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let pdfLink = documento.PDF;
         pdfLink = pdfLink.replace("/view", "/preview");
         document.getElementById("pdf-viewer").src = pdfLink;
-        console.log(pdfLink,1212122112);
-        
       } else {
         console.error("Documento no encontrado.");
       }

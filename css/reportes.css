@@ -36,7 +36,7 @@ th {
     padding: 12px;
     background-color: #673ab7;
     color: #fff;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
 }
 
@@ -62,6 +62,12 @@ tbody tr:hover {
 
   thead {
     background-color: #f9f9f9;
+  }
+
+  td.reporte {
+    max-width: 200px;       /* Ancho máximo (ajusta el valor según necesites) */
+    overflow-wrap: break-word; /* Permite que las palabras se dividan y pasen a la siguiente línea */
+    white-space: normal;       /* Permite el wrap del texto */
   }
   
   /* Opcional: Ajuste de fuente y padding para pantallas pequeñas */
